@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:todo_firestore/services/database_service.dart';
-import 'models/todo.dart';
 import 'widgets/loading.dart';
 
 class TodoList extends StatefulWidget {
@@ -26,6 +25,8 @@ class _TodoListState extends State<TodoList> {
             if (!snapshot.hasData) {
               return const Loading();
             }
+            final todos = snapshot.data!.docs;
+
             return Padding(
               padding: const EdgeInsets.all(25),
               child: Column(
@@ -39,6 +40,13 @@ class _TodoListState extends State<TodoList> {
                       color: Colors.white,
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 35),
+                    child: Text(
+                      "0 / ${todos.length}",
+                      style: const TextStyle(color: Colors.white, fontSize: 18),
+                    ),
+                  ),
                   const Divider(),
                   const SizedBox(height: 20),
                   ListView.separated(
@@ -48,10 +56,10 @@ class _TodoListState extends State<TodoList> {
                         Divider(
                       color: Colors.green[800],
                     ),
-                    itemCount: snapshot.data!.docs.length,
+                    itemCount: todos.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Dismissible(
-                        key: Key("$index"),
+                        key: UniqueKey(),
                         background: Container(
                           padding: const EdgeInsets.only(left: 20),
                           alignment: Alignment.centerLeft,
@@ -59,12 +67,14 @@ class _TodoListState extends State<TodoList> {
                           color: Colors.red,
                         ),
                         onDismissed: (direction) {
-                          print("Deleted");
+                          DatabaseService().removeTodo(todos[index].reference);
                         },
                         child: ListTile(
                           onTap: () {
                             setState(() {
                               isComplete = !isComplete;
+                              DatabaseService().completeTodo(
+                                  todos[index].reference, isComplete);
                             });
                           },
                           leading: Container(
@@ -74,7 +84,7 @@ class _TodoListState extends State<TodoList> {
                               color: Theme.of(context).primaryColor,
                               shape: BoxShape.circle,
                             ),
-                            child: isComplete
+                            child: todos[index]['isComplete']
                                 ? const Icon(
                                     Icons.check,
                                     color: Colors.white,
@@ -82,7 +92,7 @@ class _TodoListState extends State<TodoList> {
                                 : Container(),
                           ),
                           title: Text(
-                            snapshot.data!.docs[index]['title'],
+                            todos[index]['title'],
                             style: const TextStyle(
                                 fontSize: 25,
                                 fontWeight: FontWeight.w500,
@@ -129,7 +139,6 @@ class _TodoListState extends State<TodoList> {
                 ],
               ),
               children: [
-                // Divider(color: Colors.grey),
                 TextFormField(
                   controller: todoEditingController,
                   autofocus: true,
