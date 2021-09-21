@@ -13,23 +13,21 @@ class AppThemes {
   static final ThemeData darkTheme = ThemeData(
     // fontFamily: AppFontFamily.productSans,
     scaffoldBackgroundColor: _darkPrimaryVariantColor,
-    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: _darkPrimaryColor,
+      splashColor: Colors.white.withOpacity(0.25),
     ),
- 
     colorScheme: const ColorScheme.light(
       primary: _darkPrimaryColor,
       primaryVariant: _darkPrimaryVariantColor,
       secondary: _darkSecondaryColor,
       // onPrimary: _darkOnPrimaryColor,
     ),
-
     snackBarTheme: const SnackBarThemeData(
         backgroundColor: _darkSnackBarBackgroundErrorColor),
     iconTheme: const IconThemeData(
       color: _darkIconColor,
     ),
-
     popupMenuTheme: const PopupMenuThemeData(color: _darkAppBarColor),
     // textTheme: _darkTextTheme, // Font change here !!
 
@@ -44,16 +42,16 @@ class AppThemes {
     inputDecorationTheme: InputDecorationTheme(
       fillColor: _darkPrimaryColor,
       labelStyle: const TextStyle(
-        color: _darkFontColor,
-      ),
+          fontWeight: FontWeight.w300, color: Colors.white70, fontSize: 16),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(25.0),
-        borderSide: const BorderSide(color: _darkSecondaryColor),
+        borderRadius: BorderRadius.circular(20.0),
+        borderSide: const BorderSide(color: _darkPrimaryColor),
       ),
+      suffixStyle: TextStyle(color: Colors.white70),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(25.0),
+        borderRadius: BorderRadius.circular(20.0),
         borderSide: const BorderSide(
-          color: Colors.pink,
+          color: _darkPrimaryColor,
           width: 2.0,
         ),
       ),

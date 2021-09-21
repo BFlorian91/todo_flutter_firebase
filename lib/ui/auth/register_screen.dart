@@ -10,9 +10,9 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
-      child: Center(
-        child: Text('Register PAge'),
+    return const Scaffold(
+      body: Center(
+        child: Text('Register PAge', style: TextStyle(color: Colors.white),),
       ),
     );
   }

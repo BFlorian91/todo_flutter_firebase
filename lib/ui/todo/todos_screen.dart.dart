@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:todo_firestore/services/database_service.dart';
 import 'package:todo_firestore/widgets/dialog_add.dart';
 import 'package:todo_firestore/widgets/dialog_update.dart';
+import 'package:todo_firestore/widgets/nav_drawer.dart';
 import '../../widgets/loading.dart';
 
 class TodoScreen extends StatefulWidget {
@@ -21,6 +22,10 @@ class _TodoScreenState extends State<TodoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const NavDrawer(),
+      appBar: AppBar(
+        title: const Text('Task Manager'),
+      ),
       body: SafeArea(
         child: StreamBuilder<QuerySnapshot>(
           stream: DatabaseService().listTodos(),
@@ -77,7 +82,6 @@ class _TodoScreenState extends State<TodoScreen> {
                                               Navigator.of(context).pop(true),
                                           child: const Text(
                                             "Delete",
-                                            style: TextStyle(color: Colors.red),
                                           ),
                                         ),
                                         TextButton(
@@ -85,24 +89,20 @@ class _TodoScreenState extends State<TodoScreen> {
                                               Navigator.of(context).pop(false),
                                           child: const Text(
                                             "Cancel",
-                                            style:
-                                                TextStyle(color: Colors.orange),
                                           ),
                                         ),
                                       ],
                                     )
                                   : AlertDialog(
-                                      title: const Text("Delete Confirmation"),
+                                      title: const Text("Save Confirmation"),
                                       content: const Text(
-                                          "Are you sure you want to delete this item?"),
+                                          "Are you sure you have complete this task?"),
                                       actions: <Widget>[
                                         TextButton(
                                           onPressed: () =>
                                               Navigator.of(context).pop(true),
                                           child: const Text(
                                             "Done",
-                                            style:
-                                                TextStyle(color: Colors.blue),
                                           ),
                                         ),
                                         TextButton(
@@ -110,8 +110,6 @@ class _TodoScreenState extends State<TodoScreen> {
                                               Navigator.of(context).pop(false),
                                           child: const Text(
                                             "Cancel",
-                                            style:
-                                                TextStyle(color: Colors.orange),
                                           ),
                                         ),
                                       ],
@@ -121,14 +119,14 @@ class _TodoScreenState extends State<TodoScreen> {
                         },
                         key: UniqueKey(),
                         background: Container(
-                          color: Colors.blue,
+                          color: Colors.green,
                           child: Padding(
                             padding: const EdgeInsets.all(15),
                             child: Row(
                               children: const [
                                 Icon(Icons.favorite, color: Colors.white),
                                 SizedBox(width: 10),
-                                Text('Update',
+                                Text('Done',
                                     style: TextStyle(color: Colors.white)),
                               ],
                             ),
@@ -177,7 +175,7 @@ class _TodoScreenState extends State<TodoScreen> {
                             height: 25,
                             width: 25,
                             decoration: BoxDecoration(
-                              color: Theme.of(context).primaryColor,
+                              color: Theme.of(context).colorScheme.primary,
                               shape: BoxShape.circle,
                             ),
                             child: todos[index]['isComplete']
@@ -208,8 +206,8 @@ class _TodoScreenState extends State<TodoScreen> {
         child: const Icon(
           Icons.add,
           size: 25,
+          color: Colors.white,
         ),
-        backgroundColor: Theme.of(context).primaryColor,
         onPressed: () {
           showDialog(context: context, builder: (context) => DialogAdd());
         },

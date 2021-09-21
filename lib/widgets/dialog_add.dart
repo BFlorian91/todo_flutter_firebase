@@ -56,9 +56,6 @@ class DialogAdd extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
-            style: TextButton.styleFrom(
-              backgroundColor: Theme.of(context).primaryColor,
-            ),
             onPressed: () async {
               if (todoEditingController.text.isNotEmpty) {
                 await DatabaseService()
