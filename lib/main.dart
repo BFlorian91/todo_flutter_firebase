@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -23,12 +24,12 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider<AuthProvider>(
-          create: (_) => AuthProvider(),
+          create: (_) => AuthProvider(FirebaseAuth.instance),
         ),
-        // StreamProvider(
-        //   create: (context) => context.read<AuthProvider>().authStateChanges,
-        //   initialData: null,
-        // )
+        StreamProvider(
+          create: (context) => context.read<AuthProvider>().authStateChanges,
+          initialData: null,
+        )
       ],
       child: FutureBuilder(
         builder: (BuildContext context, dynamic snapshot) {
@@ -52,7 +53,6 @@ class MyApp extends StatelessWidget {
             routes: <String, WidgetBuilder>{
               '/': (context) => const Routes(),
               '/register': (context) => const RegisterScreen(),
-              '/todo': (context) => const TodoScreen(),
             },
             initialRoute: '/',
           );

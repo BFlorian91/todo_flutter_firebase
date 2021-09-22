@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:todo_firestore/providers/auth_provider.dart';
+import '../../providers/auth_provider.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -102,8 +102,10 @@ class _SignInState extends State<SignIn> {
                           if (emailController.text.isNotEmpty &&
                               passwordController.text.isNotEmpty) {
                             authProvider.signIn(
-                                emailController.text, passwordController.text);
-                            Navigator.of(context).pushReplacementNamed('/todo');
+                              emailController.text,
+                              passwordController.text,
+                              context,
+                            );
                           }
                         },
                       ),

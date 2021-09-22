@@ -9,18 +9,19 @@ class DatabaseService {
 
   var uid = const Uuid();
 
-  Future<Object> setTodo(String title) async {
+  Future<Object> setTodo(String title, String userUid) async {
     return await todosCollection.add({
       'uid': uid.v4(),
+      'user': userUid,
       'title': title,
       'isComplete': false,
     });
   }
 
-  Future<Object> saveTodo(String title) async {
-    // final date = DateFormat.yMd().add_jm();
+  Future<Object> saveTodo(String title, String userUid) async {
     return await saveTodosCollection.add({
       'uid': uid.v4(),
+      'user': userUid,
       'title': title,
       'isComplete': true,
       'date': FieldValue.serverTimestamp(),
@@ -39,7 +40,9 @@ class DatabaseService {
     return await ref.delete();
   }
 
-  Stream<QuerySnapshot> listTodos() {
-    return todosCollection.snapshots();
+  Stream<QuerySnapshot> listTodos(String userUid) {
+    // print("In the fetch method: $userUid");
+    // print(todosCollection.where('user', isEqualTo: userUid).snapshots());
+    return todosCollection.where('user', isEqualTo: userUid).snapshots();
   }
 }

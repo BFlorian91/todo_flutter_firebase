@@ -4,9 +4,10 @@ import 'package:todo_firestore/services/database_service.dart';
 
 class DialogAdd extends StatelessWidget {
   final TextEditingController todoEditingController = TextEditingController();
+  final String userUid;
 
-  DialogAdd({Key? key}) : super(key: key);
-  
+  DialogAdd({required this.userUid, Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return SimpleDialog(
@@ -59,7 +60,7 @@ class DialogAdd extends StatelessWidget {
             onPressed: () async {
               if (todoEditingController.text.isNotEmpty) {
                 await DatabaseService()
-                    .setTodo(todoEditingController.text.trim());
+                    .setTodo(todoEditingController.text.trim(), userUid);
                 Navigator.pop(context);
               }
             },

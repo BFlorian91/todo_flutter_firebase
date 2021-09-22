@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:todo_firestore/services/database_service.dart';
@@ -8,7 +9,9 @@ import 'package:todo_firestore/widgets/nav_drawer.dart';
 import '../../widgets/loading.dart';
 
 class TodoScreen extends StatefulWidget {
-  const TodoScreen({Key? key}) : super(key: key);
+  final User user;
+
+  const TodoScreen({required this.user, Key? key}) : super(key: key);
 
   @override
   _TodoScreenState createState() => _TodoScreenState();
@@ -18,22 +21,31 @@ class _TodoScreenState extends State<TodoScreen> {
   bool isComplete = false;
   int numberOfTasksComplete = 0;
   TextEditingController todoEditingController = TextEditingController();
+  Stream<QuerySnapshot<Object?>>? listTodos;
+
+  @override
+  void initState() {
+    super.initState();
+    listTodos = DatabaseService().listTodos(widget.user.uid);
+  }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       drawer: const NavDrawer(),
       appBar: AppBar(
-        title: const Text('Task Manager'),
+        title: Text(widget.user.email.toString()),
+        // title: const Text('Task Manager'),
       ),
       body: SafeArea(
         child: StreamBuilder<QuerySnapshot>(
-          stream: DatabaseService().listTodos(),
+          stream: DatabaseService().listTodos(widget.user.uid),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return const Loading();
             }
-            final todos = snapshot.data!.docs;
+            final todos = snapshot.data?.docs;
 
             return Padding(
               padding: const EdgeInsets.all(25),
@@ -51,7 +63,7 @@ class _TodoScreenState extends State<TodoScreen> {
                   Padding(
                     padding: const EdgeInsets.only(top: 35),
                     child: Text(
-                      "0 / ${todos.length}",
+                      "0 / ${todos!.length}",
                       style: const TextStyle(color: Colors.white, fontSize: 18),
                     ),
                   ),
@@ -149,7 +161,10 @@ class _TodoScreenState extends State<TodoScreen> {
                         ),
                         onDismissed: (DismissDirection direction) {
                           if (direction == DismissDirection.startToEnd) {
-                            DatabaseService().saveTodo(todos[index]['title']);
+                            DatabaseService().saveTodo(
+                              todos[index]['title'],
+                              widget.user.uid,
+                            );
                           }
                           DatabaseService().removeTodo(todos[index].reference);
                         },
@@ -209,7 +224,9 @@ class _TodoScreenState extends State<TodoScreen> {
           color: Colors.white,
         ),
         onPressed: () {
-          showDialog(context: context, builder: (context) => DialogAdd());
+          showDialog(
+              context: context,
+              builder: (context) => DialogAdd(userUid: widget.user.uid));
         },
       ),
     );

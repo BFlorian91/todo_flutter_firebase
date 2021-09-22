@@ -47,7 +47,7 @@ class AppThemes {
         borderRadius: BorderRadius.circular(20.0),
         borderSide: const BorderSide(color: _darkPrimaryColor),
       ),
-      suffixStyle: TextStyle(color: Colors.white70),
+      suffixStyle: const TextStyle(color: Colors.white70),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(20.0),
         borderSide: const BorderSide(
