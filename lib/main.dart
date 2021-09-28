@@ -2,11 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import 'package:todo_firestore/constants/app_themes.dart';
 import 'package:todo_firestore/providers/auth_provider.dart';
 import 'package:todo_firestore/routes.dart';
 import 'package:todo_firestore/ui/auth/register_screen.dart';
-import 'package:todo_firestore/ui/todo/todos_screen.dart.dart';
 import 'package:todo_firestore/widgets/loading.dart';
 
 Future<void> main() async {

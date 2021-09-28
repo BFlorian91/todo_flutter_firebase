@@ -56,5 +56,7 @@ class AppThemes {
         ),
       ),
     ),
+
+    canvasColor: _darkPrimaryVariantColor,
   );
 }

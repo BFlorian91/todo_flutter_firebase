@@ -41,8 +41,8 @@ class DatabaseService {
   }
 
   Stream<QuerySnapshot> listTodos(String userUid) {
-    // print("In the fetch method: $userUid");
-    // print(todosCollection.where('user', isEqualTo: userUid).snapshots());
     return todosCollection.where('user', isEqualTo: userUid).snapshots();
   }
+
+  
 }
